@@ -15,10 +15,10 @@ services:
       - mynet
 
   nginx:
-    image: projectethan007/nginx:latest
+    image: projectethan007/nginx:v1.1.1
     container_name: nginxserver
     ports:
-      - 80:80
+      - 82:80
     environment:
       - LDAP_USERNAME="admin"
       - LDAP_PASSWORD="admin"

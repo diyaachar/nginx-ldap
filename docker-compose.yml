@@ -1,0 +1,34 @@
+version: '3'
+services:
+  ldap:
+    image: accenture/adop-ldap:latest
+    container_name: ldapserver
+    ports:
+      - 81:389
+    environment:
+      - SLAPD_PASSWORD="admin"
+      - SLAPD_FULL_DOMAIN="dc=accenture,dc=com"
+      - INITIAL_ADMIN_USER="admin"
+      - INITIAL_ADMIN_PASSWORD="admin"
+      - SLAPD_DOMAIN="accenture.com"
+    networks:
+      - mynet
+
+  nginx:
+    image: projectethan007/nginx:latest
+    container_name: nginxserver
+    ports:
+      - 80:80
+    environment:
+      - LDAP_USERNAME="admin"
+      - LDAP_PASSWORD="admin"
+      - LDAP_SERVER="ldapserver:81"
+      - LDAP_USER_BASE_DN="ou=people,dc=accenture,dc=com"
+      - LDAP_GROUP_ATTRIBUTE="member"
+      - LDAP_USER_ID="cn"
+      - LDAP_USER_OBJECT_CLASS="inetOrgPerson"
+    networks:
+      - mynet
+
+networks:
+  mynet:
